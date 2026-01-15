@@ -14,12 +14,13 @@ public class PlayerController : MonoBehaviour
     [Header("Score Settings")]
     private int score = 0; // Player score starts at 0
 
+    [Header("Health Settings")]
+    public int health = 5; // Player health starts at 5
+
     void Start()
     {
-        // Get Rigidbody component
         rb = GetComponent<Rigidbody>();
 
-        // Cache main camera and initial offset
         mainCamera = Camera.main;
         cameraOffset = mainCamera.transform.position - transform.position;
     }
@@ -40,13 +41,20 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // Check if collided object is a coin
+        // Coin collection
         if (other.CompareTag("Pickup"))
         {
-            score++; // Increment score
-            Debug.Log("Score: " + score); // Print to console
+            score++;
+            Debug.Log("Score: " + score);
 
-            Destroy(other.gameObject); // Remove coin
+            Destroy(other.gameObject);
+        }
+
+        // Trap collision
+        if (other.CompareTag("Trap"))
+        {
+            health--;
+            Debug.Log("Health: " + health);
         }
     }
 }

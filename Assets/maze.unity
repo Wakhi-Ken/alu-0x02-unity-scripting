@@ -2801,6 +2801,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1030880310360662, guid: 7ee53e4a9557278409d14c2e0bd815ec, type: 2}
+      propertyPath: m_Name
+      value: Trap
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030880310360662, guid: 7ee53e4a9557278409d14c2e0bd815ec, type: 2}
+      propertyPath: m_TagString
+      value: Trap
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7ee53e4a9557278409d14c2e0bd815ec, type: 2}
   m_IsPrefabParent: 0
@@ -7112,6 +7120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  health: 5
 --- !u!54 &1259402556
 Rigidbody:
   m_ObjectHideFlags: 0
