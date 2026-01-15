@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,10 +13,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 cameraOffset;
 
     [Header("Score Settings")]
-    private int score = 0; // Player score starts at 0
+    private int score = 0;
 
     [Header("Health Settings")]
-    public int health = 5; // Player health starts at 5
+    public int health = 5;
+
+    // Store starting values to reset on Game Over
+    private int startingScore;
+    private int startingHealth;
 
     void Start()
     {
@@ -23,20 +28,39 @@ public class PlayerController : MonoBehaviour
 
         mainCamera = Camera.main;
         cameraOffset = mainCamera.transform.position - transform.position;
+
+        startingScore = score;
+        startingHealth = health;
     }
 
     void FixedUpdate()
     {
-        // Get input from WASD / Arrow keys
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
+        // Player movement input (natural controls)
+        float moveX = Input.GetAxis("Horizontal"); // A/D or Left/Right
+        float moveZ = Input.GetAxis("Vertical");   // W/S or Up/Down
 
-        // Move only on X and Z axes
+        // Move only on X/Z axes
         Vector3 movement = new Vector3(moveX, 0f, moveZ) * speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + movement);
 
-        // Camera follows player at a constant offset
+        // Camera follows player
         mainCamera.transform.position = transform.position + cameraOffset;
+    }
+
+    void Update()
+    {
+        // Game Over check
+        if (health <= 0)
+        {
+            Debug.Log("Game Over!");
+
+            // Reset health and score
+            health = startingHealth;
+            score = startingScore;
+
+            // Reload current scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -46,7 +70,6 @@ public class PlayerController : MonoBehaviour
         {
             score++;
             Debug.Log("Score: " + score);
-
             Destroy(other.gameObject);
         }
 
@@ -55,6 +78,12 @@ public class PlayerController : MonoBehaviour
         {
             health--;
             Debug.Log("Health: " + health);
+        }
+
+        // Goal reached
+        if (other.CompareTag("Goal"))
+        {
+            Debug.Log("You win!");
         }
     }
 }
