@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
+
+
 {
+    //player reference(set in inspector) to move the player object using Rigidbody
+    public GameObject player;
+
     // Editable speed in Inspector
     public float speed = 5f;
 
@@ -24,5 +29,8 @@ public class PlayerController : MonoBehaviour
 
         // Move the player
         rb.MovePosition(rb.position + movement);
+
+        //camera follow player
+        transform.position = player.transform.position + new Vector3(0, 5, -10);
     }
 }
