@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,6 +19,14 @@ public class PlayerController : MonoBehaviour
     [Header("Health Settings")]
     public int health = 5;
 
+    public Text scoreText;
+
+    public Text healthText;
+
+    public Text winLoseText;
+
+    public Image winLoseBG;
+
     // Store starting values to reset on Game Over
     private int startingScore;
     private int startingHealth;
@@ -31,6 +40,10 @@ public class PlayerController : MonoBehaviour
 
         startingScore = score;
         startingHealth = health;
+
+        SetScoreText();
+        SetHealthText();
+        winLoseText.text = "";
     }
 
     void FixedUpdate()
@@ -69,7 +82,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Pickup"))
         {
             score++;
-            Debug.Log("Score: " + score);
+            SetScoreText();
             Destroy(other.gameObject);
         }
 
@@ -77,13 +90,26 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Trap"))
         {
             health--;
-            Debug.Log("Health: " + health);
+            SetHealthText();
         }
 
         // Goal reached
         if (other.CompareTag("Goal"))
         {
-            Debug.Log("You win!");
+            winLoseText.text = "You Win!";
+            winLoseText.color = Color.black;
+            winLoseBG.color = Color.green;
         }
+    }
+
+
+    void SetScoreText()
+    {
+        scoreText.text = "Score: " + score;
+    }
+
+    void SetHealthText()
+    {
+        healthText.text = "Health: " + health;
     }
 }
